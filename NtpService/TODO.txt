@@ -1,0 +1,3 @@
+﻿* Add some debugging logs, toggled by registry settings
+* Add unit tests
+* Add installer

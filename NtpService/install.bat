@@ -1,0 +1,1 @@
+installutil bin/%1/NtpService.exe
