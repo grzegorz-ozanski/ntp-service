@@ -128,8 +128,9 @@ namespace NtpService
 
                 try
                 {
-                    Win32SystemTime.Set(ntpTime);
-                    DateTime localTime = Win32SystemTime.GetLocal();
+                    Win32SystemTime systemTime = new Win32SystemTime(new SystemTimeProvider());
+                    systemTime.Set(ntpTime);
+                    DateTime localTime = systemTime.GetLocal();
                     _logger.Write("System time successfully set to: {0}", localTime);
                 }
                 catch (Exception ex)

@@ -1,5 +1,4 @@
-﻿using System;
-using NtpServiceLibrary;
+﻿using NtpServiceLibrary;
 
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("NtpUnitTests")]
 

@@ -1,6 +1,4 @@
 using NtpServiceConsole8;
-using System;
-using Xunit;
 
 namespace NtpUnitTests
 {

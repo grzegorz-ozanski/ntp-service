@@ -4,19 +4,38 @@ using System.Runtime.InteropServices;
 
 namespace NtpServiceLibrary
 {
+    public interface ISystemTimeProvider
+    {
+        bool SetSystemTime(ref Win32SystemTime.SystemTime st);
+        bool GetSystemTime(ref Win32SystemTime.SystemTime st);
+        bool GetLocalTime(ref Win32SystemTime.SystemTime st);
+    }
+
+    public class SystemTimeProvider : ISystemTimeProvider
+    {
+        [DllImport("kernel32.dll", SetLastError = true, EntryPoint = "SetSystemTime")]
+        private static extern bool _SetSystemTime(ref Win32SystemTime.SystemTime st);
+
+        [DllImport("kernel32.dll", SetLastError = true, EntryPoint = "GetSystemTime")]
+        private static extern bool _GetSystemTime(ref Win32SystemTime.SystemTime st);
+
+        [DllImport("kernel32.dll", SetLastError = true, EntryPoint = "GetLocalTime")]
+        private static extern bool _GetLocalTime(ref Win32SystemTime.SystemTime st);
+
+        public bool SetSystemTime(ref Win32SystemTime.SystemTime st) => _SetSystemTime(ref st);
+        public bool GetSystemTime(ref Win32SystemTime.SystemTime st) => _GetSystemTime(ref st);
+        public bool GetLocalTime(ref Win32SystemTime.SystemTime st) => _GetLocalTime(ref st);
+    }
     /// <summary>
     /// Provides static methods for interacting with the Windows system time.
     /// </summary>
-    public static class Win32SystemTime
+    public class Win32SystemTime
     {
-        [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern bool SetSystemTime(ref SystemTime st);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern bool GetSystemTime(ref SystemTime st);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern bool GetLocalTime(ref SystemTime st);
+        private readonly ISystemTimeProvider _provider;
+        public Win32SystemTime(ISystemTimeProvider provider)
+        {
+            _provider = provider;
+        }
 
         [StructLayout(LayoutKind.Sequential)]
         public struct SystemTime
@@ -35,7 +54,7 @@ namespace NtpServiceLibrary
         /// Sets the system time (UTC).
         /// </summary>
         /// <param name="dt">The UTC time to set.</param>
-        public static void Set(DateTime dt)
+        public void Set(DateTime dt)
         {
             if (dt.Kind != DateTimeKind.Utc)
             {
@@ -54,7 +73,7 @@ namespace NtpServiceLibrary
                 Millisecond = (ushort)dt.Millisecond
             };
 
-            if (!SetSystemTime(ref systemTime))
+            if (!_provider.SetSystemTime(ref systemTime))
             {
                 int err = Marshal.GetLastWin32Error();
                 throw new InvalidOperationException($"SetSystemTime failed: {new Win32Exception(err).Message}", new Win32Exception(err));
@@ -65,10 +84,10 @@ namespace NtpServiceLibrary
         /// Gets the current system time (UTC).
         /// </summary>
         /// <returns>The current UTC time.</returns>
-        public static DateTime Get()
+        public DateTime Get()
         {
             SystemTime systemTime = new SystemTime();
-            if (!GetSystemTime(ref systemTime))
+            if (!_provider.GetSystemTime(ref systemTime))
             {
                 int err = Marshal.GetLastWin32Error();
                 throw new InvalidOperationException($"GetSystemTime failed: {new Win32Exception(err).Message}", new Win32Exception(err));
@@ -80,10 +99,10 @@ namespace NtpServiceLibrary
         /// Gets the current local system time.
         /// </summary>
         /// <returns>The current local time.</returns>
-        public static DateTime GetLocal()
+        public DateTime GetLocal()
         {
             SystemTime systemTime = new SystemTime();
-            if (!GetLocalTime(ref systemTime))
+            if (!_provider.GetLocalTime(ref systemTime))
             {
                 int err = Marshal.GetLastWin32Error();
                 throw new InvalidOperationException($"GetLocalTime failed: {new Win32Exception(err).Message}", new Win32Exception(err));

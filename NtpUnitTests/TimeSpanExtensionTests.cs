@@ -1,6 +1,4 @@
 using NtpServiceLibrary;
-using System;
-using Xunit;
 
 namespace NtpUnitTests
 {
