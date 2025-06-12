@@ -30,14 +30,14 @@ This checklist covers all recommended steps before making the repository public 
 - [x] Professional `README.md` with build and usage instructions
 - [x] Add XML documentation (`/// <summary>`) to all public APIs
 - [x] Add a "Planned improvements" or Roadmap section to README
-- [ ] Note in README that `InstallUtil` is a temporary install method
+- [x] Note in README that `InstallUtil` is a temporary install method
 
 ---
 
 ## 🧪 Testing & Debugging
 
 - [x] Console runner allows standalone testing
-- [ ] At least 1 unit test (e.g. `RetrieveAndSetTime` with `MockLogger`)
+- [x] At least 1 unit test (e.g. `RetrieveAndSetTime` with `MockLogger`)
 - [ ] Ability to inject mocks for `ILogger` and `ISettingsProvider`
 
 ---

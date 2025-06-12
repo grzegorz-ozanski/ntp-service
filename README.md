@@ -85,7 +85,7 @@ NtpService/
 
 ## 🚧 Planned Improvements
 * Add some debugging logs, toggled by registry settings
-* Add unit tests
+* Add more unit tests
 * Add installer
 
 
