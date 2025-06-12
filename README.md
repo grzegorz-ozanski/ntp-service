@@ -72,14 +72,16 @@ You can mock the logger or override settings provider via DI in code.
 NtpService/
 ├── NtpService/           # Windows Service project
 │   ├── NtpService.cs     # Main service class
-│   ├── ProjectInstaller* # Service installer definition
+│   ├── ProjectInstaller* # Service installer definition placeholder
 │   └── EventLogger.cs    # Event log logger
 ├── NtpServiceConsole/    # Console runner for debugging
+├── NtpServiceConsole8/   # Console runner for debugging, .NET 8 version
 ├── NtpServiceLibrary/    # Shared logic: NTP, Win32 interop, settings, logging
 │   ├── NtpTime.cs
 │   ├── WindowsTime.cs
 │   ├── Settings.cs
 │   └── Logger.cs
+├── NtpUnitTests/         # Basic unit tests
 └── README.md             # This file
 ```
 
