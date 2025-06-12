@@ -1,7 +1,8 @@
-﻿using System;
-using NtpServiceLibrary;
+﻿using NtpServiceLibrary;
 
-namespace NtpServiceConsole
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("NtpUnitTests")]
+
+namespace NtpServiceConsole8
 {
     /// <summary>
     /// Provides a simple logger implementation that writes log messages to the console.

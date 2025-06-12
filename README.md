@@ -17,7 +17,7 @@ I decided to create this project because, for some reason, on my Windows machine
 ## 🖥️ Requirements
 
 - Windows 10 or newer (admin privileges required)
-- .NET Framework 4.7.2
+- .NET 8.0 (for console runner)
 
 ## ⚙️ Configuration
 
