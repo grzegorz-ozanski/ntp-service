@@ -3,9 +3,11 @@ using System.ServiceProcess;
 using System.Timers;
 using NtpServiceLibrary;
 
-
 namespace NtpService
 {
+    /// <summary>
+    /// Windows Service for synchronizing system time with an NTP server.
+    /// </summary>
     public partial class NtpService : ServiceBase
     {
         private const string LogName = "Ntp Service Log";
@@ -17,6 +19,11 @@ namespace NtpService
         private readonly ISettingsProvider _settingsProvider;
         private readonly ILogger _logger;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NtpService"/> class.
+        /// </summary>
+        /// <param name="settingsProvider">Optional settings provider.</param>
+        /// <param name="logger">Optional logger.</param>
         public NtpService(ISettingsProvider settingsProvider = null, ILogger logger = null)
         {
             ServiceName = "NtpService";
@@ -30,6 +37,10 @@ namespace NtpService
             _settingsProvider = settingsProvider ?? new RegistrySettingsProvider(ServiceName, _logger);
         }
 
+        /// <summary>
+        /// Called when the service starts.
+        /// </summary>
+        /// <param name="args">Startup arguments.</param>
         protected override void OnStart(string[] args)
         {
             ServiceStatus.Set(ServiceHandle, ServiceState.SERVICE_START_PENDING);
@@ -61,6 +72,10 @@ namespace NtpService
             }
         }
 
+        /// <summary>
+        /// Called when a session change event occurs.
+        /// </summary>
+        /// <param name="changeDescription">Session change details.</param>
         protected override void OnSessionChange(SessionChangeDescription changeDescription)
         {
             base.OnSessionChange(changeDescription);
@@ -74,6 +89,9 @@ namespace NtpService
             }
         }
 
+        /// <summary>
+        /// Called when the service stops.
+        /// </summary>
         protected override void OnStop()
         {
             ServiceStatus.Set(ServiceHandle, ServiceState.SERVICE_STOP_PENDING);

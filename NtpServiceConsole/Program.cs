@@ -2,9 +2,20 @@
 using NtpServiceLibrary;
 using NtpServiceConsole;
 
+/// <summary>
+/// Entry point for the NtpServiceConsole application.
+/// This console application retrieves the current time from an NTP server and displays it.
+/// It attempts to read configuration from the Windows Registry, falling back to default settings if necessary.
+/// Works as a test client for the NTP service library.
+/// </summary>
 class Program
 {
-    static void Main(string[] args)
+    /// <summary>
+    /// Main method for the console application.
+    /// Initializes logging, loads settings, retrieves NTP time, and displays results.
+    /// Handles and reports errors gracefully.
+    /// </summary>
+    static void Main()
     {
         try
         {

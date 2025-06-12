@@ -4,6 +4,9 @@ using System.Runtime.InteropServices;
 
 namespace NtpServiceLibrary
 {
+    /// <summary>
+    /// Provides static methods for interacting with the Windows system time.
+    /// </summary>
     public static class Win32SystemTime
     {
         [DllImport("kernel32.dll", SetLastError = true)]
@@ -28,6 +31,10 @@ namespace NtpServiceLibrary
             public ushort Millisecond;
         }
 
+        /// <summary>
+        /// Sets the system time (UTC).
+        /// </summary>
+        /// <param name="dt">The UTC time to set.</param>
         public static void Set(DateTime dt)
         {
             if (dt.Kind != DateTimeKind.Utc)
@@ -53,6 +60,11 @@ namespace NtpServiceLibrary
                 throw new InvalidOperationException($"SetSystemTime failed: {new Win32Exception(err).Message}", new Win32Exception(err));
             }
         }
+
+        /// <summary>
+        /// Gets the current system time (UTC).
+        /// </summary>
+        /// <returns>The current UTC time.</returns>
         public static DateTime Get()
         {
             SystemTime systemTime = new SystemTime();
@@ -63,6 +75,11 @@ namespace NtpServiceLibrary
             }
             return new DateTime(systemTime.Year, systemTime.Month, systemTime.Day, systemTime.Hour, systemTime.Minute, systemTime.Second, systemTime.Millisecond);
         }
+
+        /// <summary>
+        /// Gets the current local system time.
+        /// </summary>
+        /// <returns>The current local time.</returns>
         public static DateTime GetLocal()
         {
             SystemTime systemTime = new SystemTime();

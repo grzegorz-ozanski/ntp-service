@@ -4,6 +4,9 @@ using System;
 
 namespace NtpServiceLibrary
 {
+    /// <summary>
+    /// Provides methods for retrieving time from an NTP server.
+    /// </summary>
     public class NtpTime
     {
         public const int ServerTimeout = 5000;
@@ -76,9 +79,9 @@ namespace NtpServiceLibrary
         /// <summary>
         /// Retrieves the current time from an NTP server over UDP.
         /// </summary>
-        /// <param name="ntpServer">Hostname or IP address of the NTP server</param>
-        /// <param name="ntpPort">UDP port, typically 123</param>
-        /// <returns>UTC DateTime</returns>
+        /// <param name="ntpServer">Hostname or IP address of the NTP server.</param>
+        /// <param name="ntpPort">UDP port, typically 123.</param>
+        /// <returns>UTC DateTime.</returns>
         public static DateTime RetrieveNTPTime(string ntpServer, int ntpPort)
         {
             if (string.IsNullOrWhiteSpace(ntpServer))
@@ -107,6 +110,5 @@ namespace NtpServiceLibrary
                 throw new InvalidOperationException($"Failed to contact NTP server {ntpServer}:{ntpPort}", ex);
             }
         }
-
     }
 }
