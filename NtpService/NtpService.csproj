@@ -74,9 +74,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TODO.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\NtpServiceLibrary\NtpServiceLibrary.csproj">
       <Project>{8dcc0f87-1a06-4da6-a827-c612607e5bd7}</Project>
       <Name>NtpServiceLibrary</Name>

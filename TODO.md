@@ -29,7 +29,7 @@ This checklist covers all recommended steps before making the repository public 
 
 - [x] Professional `README.md` with build and usage instructions
 - [x] Add XML documentation (`/// <summary>`) to all public APIs
-- [ ] Add a "Planned improvements" or Roadmap section to README
+- [x] Add a "Planned improvements" or Roadmap section to README
 - [ ] Note in README that `InstallUtil` is a temporary install method
 
 ---
