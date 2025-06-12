@@ -30,6 +30,7 @@ namespace NtpUnitTests
             value.Set("new", "test");
             Assert.Equal("new", value.Get());
             Assert.Contains("test", value.ToString());
+            Assert.Equal("new", (string)value);
         }
     }
 }
