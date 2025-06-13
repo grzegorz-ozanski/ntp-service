@@ -62,9 +62,9 @@
     /// </summary>
     public class Settings
     {
-        private const string DefaultNTPServer = "pool.ntp.org";
-        private const int DefaultNTPPort = 123;
-        private const int DefaultNTPPollIntervalHours = 6;
+        internal const string DefaultNTPServer = "pool.ntp.org";
+        internal const int DefaultNTPPort = 123;
+        internal const int DefaultNTPPollIntervalHours = 6;
 
         /// <summary>
         /// NTP server address.

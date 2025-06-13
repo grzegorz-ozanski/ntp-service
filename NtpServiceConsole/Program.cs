@@ -2,7 +2,7 @@
 ///.NET 8.0 version of console application for NTP Service
 using System;
 using NtpServiceLibrary;
-using NtpServiceConsole8;
+using NtpServiceConsole;
 
 /// <summary>
 /// Entry point for the NtpServiceConsole application.
