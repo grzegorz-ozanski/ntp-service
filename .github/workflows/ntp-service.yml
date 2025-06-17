@@ -4,7 +4,7 @@
 # documentation.
 
 # This workflow will build, and test .NET Core application.
-name: NtpService
+name: ntp-service
 
 on:
   push:
