@@ -54,6 +54,7 @@ jobs:
 
     # Generate and present coverage report`
     - name: Coverage Report
-      run: | 
+      run: |
+        dotnet add package ReportGenerator --version 5.4.8    
         reportgenerator -reports:NtpUnitTests/TestResults/**/coverage.cobertura.xml -targetdir:coveragereport -reporttypes:Html,TextSummary
         cat .\coveragereport\Summary.txt

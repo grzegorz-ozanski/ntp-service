@@ -66,7 +66,12 @@ NtpServiceConsole.exe
 
 You can mock the logger or override settings provider via DI in code.
 
-To run coverage tests, use:
+### Coverage Tests:
+First, install the `ReportGenerator` tool globally if you haven't done so:
+```bash
+dotnet add package ReportGenerator --version 5.4.8
+```
+Then, run the tests with coverage collection enabled. The coverage results will be generated in the `NtpUnitTests/TestResults` directory.
 ```bash
 dotnet test --collect:"XPlat Code Coverage"
 reportgenerator -reports:NtpUnitTests/TestResults/**/coverage.cobertura.xml -targetdir:coveragereport
