@@ -44,17 +44,20 @@ jobs:
 
     # Build the application
     - name: Buid the application
-      run: msbuild $env:Solution_Name /p:Configuration=$env:Configuration
+      run: msbuild $env:Solution_Name /p:Configuration=$env:Configuration /p:PostBuildEvent=""
       env:
         Configuration: ${{ matrix.configuration }}
 
     # Execute all unit tests in the solution
     - name: Execute unit tests
       run: dotnet test --collect:"XPlat Code Coverage"
-
+    
+      # Install ReportGenerator
+    - name: Install ReportGenerator CLI
+      run: dotnet tool install --global dotnet-reportgenerator-globaltool --version 5.4.8
+    
     # Generate and present coverage report`
     - name: Coverage Report
       run: |
-        dotnet add package ReportGenerator --version 5.4.8    
-        reportgenerator -reports:NtpUnitTests/TestResults/**/coverage.cobertura.xml -targetdir:coveragereport -reporttypes:Html,TextSummary
-        cat .\coveragereport\Summary.txt
+        reportgenerator -reports:NtpUnitTests/TestResults/**/coverage.cobertura.xml -targetdir:coveragereport -reporttypes:Html;TextSummary
+        type coveragereport\Summary.txt
