@@ -63,9 +63,11 @@ jobs:
         cat .\coveragereport\Summary.txt
 
     - name: Deploy coverage badge to GitHub Pages
+      if: matrix.configuration == 'Debug'
       uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./coveragereport
+        destination_dir: coveragereport
         publish_branch: gh-pages
         force_orphan: true
