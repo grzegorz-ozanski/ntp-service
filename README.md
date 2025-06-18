@@ -1,7 +1,7 @@
 # ⏰ NtpService
 
 ![CI](https://github.com/grzegorz-ozanski/ntp-service/actions/workflows/ntp-service.yml/badge.svg)
-![![Coverage](https://grzegorz-ozanski.github.io/ntp-service/coverage/badge_linecoverage.svg)](https://grzegorz-ozanski.github.io/ntp-service/coverage/)
+[![Coverage](https://grzegorz-ozanski.github.io/ntp-service/coverage/badge_linecoverage.svg)](https://grzegorz-ozanski.github.io/ntp-service/coverage/)
 
 Windows Service for periodically synchronizing the system time with an NTP server.
 Designed for reliable, lightweight operation on Windows machines without requiring external time sync software.
