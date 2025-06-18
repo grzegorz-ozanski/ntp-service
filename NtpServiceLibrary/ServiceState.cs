@@ -23,6 +23,18 @@ namespace NtpServiceLibrary
         SERVICE_PAUSED = 0x00000007,
     }
 
+    public interface IServiceStatusProvider
+    {
+        bool SetServiceStatus(System.IntPtr handle, ref ServiceStateInfo serviceStatus);
+    }
+
+    public class SystemServiceStatusProvider : IServiceStatusProvider
+    {
+        [DllImport("advapi32.dll", SetLastError = true, EntryPoint = "SetServiceStatus")]
+        public static extern bool _SetServiceStatus(System.IntPtr handle, ref ServiceStateInfo serviceStatus);
+        public bool SetServiceStatus(System.IntPtr handle, ref ServiceStateInfo serviceStatus) => _SetServiceStatus(handle, ref serviceStatus);
+    }
+
     /// <summary>
     /// Contains information about the current status of a Windows service.
     /// Used for interop with the Windows Service Control Manager.
@@ -53,12 +65,14 @@ namespace NtpServiceLibrary
     {
         private static ServiceStatus _instance = null;
         private ServiceStateInfo _serviceStateInfo;
+        private IServiceStatusProvider _provider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceStatus"/> class.
         /// </summary>
-        private ServiceStatus()
+        private ServiceStatus(IServiceStatusProvider provider)
         {
+            _provider = provider ?? new SystemServiceStatusProvider();
             _serviceStateInfo = new ServiceStateInfo
             {
                 dwWaitHint = 100000                
@@ -69,11 +83,28 @@ namespace NtpServiceLibrary
         /// Gets the singleton instance of <see cref="ServiceStatus"/>.
         /// </summary>
         /// <returns>The singleton instance.</returns>
-        private static ServiceStatus GetInstance()
+        private static ServiceStatus GetInstance(IServiceStatusProvider provider)
         {
             if (_instance == null)
-                _instance = new ServiceStatus();
+                _instance = new ServiceStatus(provider);
             return _instance;
+        }
+
+        /// <summary>
+        /// Sets the provider.
+        /// </summary>
+        /// <param name="provider">Service status manipulation object.</param>
+        public static void SetProvider(IServiceStatusProvider provider)
+        {
+            _instance._provider = provider ?? new SystemServiceStatusProvider();
+        }
+
+        /// <summary>
+        /// Deletes the singleton instance (e.g. for use in testing).
+        /// </summary>
+        internal static void ClearInstance()
+        {
+            _instance = null;
         }
 
         /// <summary>
@@ -81,15 +112,13 @@ namespace NtpServiceLibrary
         /// </summary>
         /// <param name="handle">A handle to the service status.</param>
         /// <param name="state">The new state to set.</param>
+        /// <param name="provider">Service status manipulation object.</param>
         /// <returns>True if the status was set successfully; otherwise, false.</returns>
-        public static bool Set(System.IntPtr handle, ServiceState state)
+        public static bool Set(System.IntPtr handle, ServiceState state, IServiceStatusProvider provider=null)
         {
-            var instance = GetInstance();
+            var instance = GetInstance(provider);
             instance._serviceStateInfo.dwCurrentState = state;
-            return SetServiceStatus(handle, ref instance._serviceStateInfo);
+            return instance._provider.SetServiceStatus(handle, ref instance._serviceStateInfo);
         }
-
-        [DllImport("advapi32.dll", SetLastError = true)]
-        private static extern bool SetServiceStatus(System.IntPtr handle, ref ServiceStateInfo serviceStatus);
     }
 }
