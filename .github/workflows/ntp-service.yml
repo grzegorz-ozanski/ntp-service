@@ -67,7 +67,7 @@ jobs:
     # Update passrate badge
     - name: Update passrate badge in README.md
       run: |
-        $badgePattern = '\[![Unit tests\]\(https://img\.shields\.io/badge/Unit%20tests-Passed%3A[0-9]+%20Failed%3A[0-9]+-[a-z]+\)\]\(https://github\.com/grzegorz-ozanski/ntp-service/actions/runs/[0-9]+\)'
+        $badgePattern = '\[!\[Unit tests\]\(https://img\.shields\.io/badge/Unit%20tests-Passed%3A[0-9]+%20Failed%3A[0-9]+-[a-z]+\)\]\(https://github\.com/grzegorz-ozanski/ntp-service/actions/runs/[0-9]+\)'
         $badge = .\.github\scripts\badge-url.ps1 $env:Test_Results_Path\$env:Test_Results_File
         $newBadge = "[![Unit tests]($badge)](https://github.com/grzegorz-ozanski/ntp-service/actions/runs/${{ github.run_id }})"
 
