@@ -23,8 +23,10 @@ jobs:
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
 
     env:
-      Solution_Name: NtpService                         # Replace with your solution name, i.e. MyWpfApp.sln.
-      Test_Project_Path: NtpUnitTests\NtpUnitTests.csproj                  # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
+      Solution_Name: NtpService                     # Replace with your solution name, i.e. MyWpfApp.sln.
+      Test_Results_Path: NtpUnitTests\TestResults   # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
+      Test_Results_File: test_results.trx           # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
+      Readme_Path: README.md
 
     steps:
     - name: Checkout
@@ -50,9 +52,9 @@ jobs:
 
     # Execute all unit tests in the solution
     - name: Execute unit tests
-      run: dotnet test --collect:"XPlat Code Coverage"
+      run: dotnet test --collect:"XPlat Code Coverage" --logger "trx;LogFileName=$env:Test_Results_File"
     
-      # Install ReportGenerator
+    # Install ReportGenerator
     - name: Install ReportGenerator CLI
       run: dotnet tool install --global dotnet-reportgenerator-globaltool --version 5.4.8
     
@@ -61,6 +63,15 @@ jobs:
       run: |
         reportgenerator -reports:NtpUnitTests/TestResults/**/coverage.cobertura.xml -targetdir:coveragereport -reporttypes:Html,TextSummary,Badges
         cat .\coveragereport\Summary.txt
+
+    # Update passrate badge
+    - name: Update passrate badge in README.md
+      run: |
+        $badgePattern = '!\[Unit tests\]\(https://img\.shields\.io/badge/Unit%20tests-Passed%3A[0-9]+%20Failed%3A[0-9]+-[a-z]+\)'
+        $badge = .\.github\scripts\badge-url.ps1 $env:Test_Results_Path\$env:Test_Results_File
+        $newBadge = "![Unit tests]($badge)"
+
+        (Get-Content ${env:Readme_Path}) -replace $badgePattern, $newBadge | Set-Content ${env:Readme_Path}
 
     - name: Deploy coverage badge to GitHub Pages
       if: matrix.configuration == 'Debug'
