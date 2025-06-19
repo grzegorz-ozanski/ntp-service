@@ -1,7 +1,7 @@
 # ⏰ NtpService
 
 ![CI](https://github.com/grzegorz-ozanski/ntp-service/actions/workflows/ntp-service.yml/badge.svg)
-[![Unit tests](https://img.shields.io/badge/Unit%20tests-Passed%3A22%20Failed%3A0-brightgreen)](https://github.com/grzegorz-ozanski/ntp-service/actions/runs/0)
+[![Unit tests](https://img.shields.io/badge/Unit%20tests-Passed%3A22%20Failed%3A0-brightgreen)](https://github.com/grzegorz-ozanski/ntp-service/actions/runs/15763402504)
 [![Coverage](https://grzegorz-ozanski.github.io/ntp-service/coverage/badge_linecoverage.svg)](https://grzegorz-ozanski.github.io/ntp-service/coverage/)
 
 Windows Service for periodically synchronizing the system time with an NTP server.
