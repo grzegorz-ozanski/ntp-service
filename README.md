@@ -60,6 +60,46 @@ powershell -Command "Start-Process cmd -ArgumentList ('/c',
 
 > ℹ️ This approach uses hardcoded paths and requires administrative privileges. Use with caution.
 
+### 📝 Event Log Integration
+
+This service writes runtime logs to the Windows Event Log using a custom event log named **`"Ntp Service Log"`** and source **`"Ntp Service"`**.
+
+#### ⚙️ Automatic Registration
+
+The service attempts to automatically register the event log and source during startup if they do not exist:
+
+```csharp
+if (!EventLog.SourceExists(_source))
+{
+    EventLog.CreateEventSource(_source, _logName);
+}
+```
+where `_source` is `"Ntp Service"` and `_logName` is `"Ntp Service Log"`.
+
+> 🛑 **Administrator rights are required** to register a new event log source. This should happen only once, e.g. during installation or first run.
+
+#### 🔍 Viewing Logs
+
+Once registered and an event is logged, you can view entries under:
+
+```
+Event Viewer → Applications and Services Logs → Ntp Service Log
+```
+
+The logs may not appear initially due to Event Viewer caching issues. In such a case:
+
+1. Close and reopen Event Viewer.
+2. Run the following command to ensure the log is enabled:
+   ```powershell
+   wevtutil sl "Ntp Service Log" /e:true
+   ```
+
+Alternatively, verify that logs are being written using:
+
+```powershell
+wevtutil qe "Ntp Service Log" /f:text /c:5
+```
+
 ## 🧪 Testing / Debug Mode
 
 To run the service logic in console mode (for testing):
