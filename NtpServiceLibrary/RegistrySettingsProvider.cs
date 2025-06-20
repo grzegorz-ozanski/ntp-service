@@ -3,24 +3,48 @@
 namespace NtpServiceLibrary
 {
     /// <summary>
+    /// Provides a wrapper around the Windows Registry key to implement the IKey interface.
+    /// </summary>
+    internal class RegistryKeyWrapper : IKey
+    {
+        private readonly RegistryKey _registryKey;
+        public RegistryKeyWrapper(RegistryKey registryKey)
+        {
+            _registryKey = registryKey;
+        }
+        public object GetValue(string name) => _registryKey.GetValue(name);
+        public RegistryValueKind GetValueKind(string name) => _registryKey.GetValueKind(name);
+        public IKey OpenSubKey(string name)
+        {
+            var subkey = _registryKey.OpenSubKey(name);
+            return subkey != null ? new RegistryKeyWrapper(subkey) : null;
+        }
+        public string[] GetValueNames() => _registryKey.GetValueNames();
+    }
+
+    /// <summary>
     /// Provides a settings provider that reads NTP service configuration from the Windows Registry.
     /// </summary>
     public class RegistrySettingsProvider : ISettingsProvider
     {
         private readonly ILogger _logger;
-        private readonly string _serviceName;
+        private readonly string[] _subKeys;
         private readonly Settings _settings;
+        private readonly IKey _registryKey;
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RegistrySettingsProvider"/> class.
         /// </summary>
         /// <param name="serviceName">The name of the service whose settings are to be read.</param>
         /// <param name="logger">Logger instance for logging events and errors.</param>
-        public RegistrySettingsProvider(string serviceName, ILogger logger)
+        /// <param name="registryKey">Root node of registry do use, or null if the Windows default (HKLM) is to be used.</param>
+        public RegistrySettingsProvider(string serviceName, ILogger logger, IKey registryKey = null)
         {
-            _serviceName = serviceName;
+            _subKeys = new string[] { "SYSTEM", "CurrentControlSet", "Services", serviceName, "Parameters" };
             _logger = logger;
             _settings = new Settings();
+            _registryKey = registryKey ?? new RegistryKeyWrapper(Registry.LocalMachine);
         }
 
         /// <summary>
@@ -52,7 +76,7 @@ namespace NtpServiceLibrary
         /// <param name="expectedType">The expected registry value type.</param>
         /// <param name="message">Additional message for logging.</param>
         /// <returns>Updated log message.</returns>
-        private string ReadValue<T>(ref SettingsValue<T> settingsValue, RegistryKey registryKey, string registryValue, 
+        private string ReadValue<T>(ref SettingsValue<T> settingsValue, IKey registryKey, string registryValue, 
             RegistryValueKind expectedType, string message)
         {
             var value = registryKey.GetValue(registryValue);
@@ -73,9 +97,8 @@ namespace NtpServiceLibrary
         /// <returns>A <see cref="Settings"/> object containing the loaded or default settings.</returns>
         public Settings Read()
         {
-            RegistryKey registryKey = Registry.LocalMachine;
-            string[] subkeys = { "SYSTEM", "CurrentControlSet", "Services", _serviceName, "Parameters" };
-            foreach (var key in subkeys)
+            IKey registryKey = _registryKey;
+            foreach (var key in _subKeys)
             {
                 registryKey = registryKey.OpenSubKey(key);
                 if (registryKey == null)
@@ -87,7 +110,7 @@ namespace NtpServiceLibrary
                         );
                     return _settings;
                 }
-                }
+            }
             string additionalMessage = "";
 
             foreach (var registryValue in registryKey.GetValueNames())
