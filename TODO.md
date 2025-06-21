@@ -38,7 +38,7 @@ This checklist covers all recommended steps before making the repository public 
 
 - [x] Console runner allows standalone testing
 - [x] At least 1 unit test (e.g. `RetrieveAndSetTime` with `MockLogger`)
-- [ ] Ability to inject mocks for `ILogger` and `ISettingsProvider`
+- [x] Ability to inject mocks for `ILogger` and `ISettingsProvider`
 
 ---
 
@@ -47,7 +47,7 @@ This checklist covers all recommended steps before making the repository public 
 - [ ] Screenshot from Event Viewer showing log entries
 - [ ] Example `.reg` file with default registry configuration
 - [ ] Architecture diagram (e.g., UDP → NTP → Win32 API → Event Log)
-- [ ] Add GitHub Actions or build status badge
+- [x] Add GitHub Actions or build status badge
 
 ---
 
@@ -56,8 +56,8 @@ This checklist covers all recommended steps before making the repository public 
 - [x] License file (MIT)
 - [x] Author attribution in README
 - [ ] Repo description and tags on GitHub
-- [ ] No test credentials, secrets or sensitive data
-- [ ] Clean build with no warnings
+- [x] No test credentials, secrets or sensitive data
+- [x] Clean build with no warnings
 
 ---
 
