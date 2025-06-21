@@ -1,0 +1,36 @@
+Summary
+  Generated on: 6/21/2025 - 2:34:26 PM
+  Coverage date: 6/21/2025 - 2:34:23 PM
+  Parser: MultiReport (2x Cobertura)
+  Assemblies: 2
+  Classes: 12
+  Files: 8
+  Line coverage: 69.2%
+  Covered lines: 187
+  Uncovered lines: 83
+  Coverable lines: 270
+  Total lines: 736
+  Branch coverage: 67.8% (38 of 56)
+  Covered branches: 38
+  Total branches: 56
+  Method coverage: 73.8% (31 of 42)
+  Full method coverage: 73.8% (31 of 42)
+  Covered methods: 31
+  Fully covered methods: 31
+  Total methods: 42
+
+NtpServiceConsole                                   26%
+  NtpServiceConsole.ConsoleLogger                  100%
+  Program                                            0%
+
+NtpServiceLibrary                                 78.1%
+  NtpServiceLibrary.NtpTime                          0%
+  NtpServiceLibrary.RegistryKeyWrapper            81.8%
+  NtpServiceLibrary.RegistrySettingsProvider       100%
+  NtpServiceLibrary.ServiceStatus                  100%
+  NtpServiceLibrary.Settings                       100%
+  NtpServiceLibrary.SettingsValue<T>               100%
+  NtpServiceLibrary.SystemServiceStatusProvider      0%
+  NtpServiceLibrary.SystemTimeProvider            66.6%
+  NtpServiceLibrary.TimeSpanExtension              100%
+  NtpServiceLibrary.Win32SystemTime                100%
