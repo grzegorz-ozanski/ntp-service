@@ -28,6 +28,7 @@ jobs:
       Test_Results_File: test_results.trx           # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
       Readme_Path: README.md
       Git_Push_Script: .github/scripts/git-push.ps1
+      Badge_Script: .github/scripts/badge-url.ps1
       Gh_Actions_Email: "github-actions@github.com"
       Gh_Actions_User_Name: "github-actions"
 
@@ -74,7 +75,7 @@ jobs:
       if: matrix.configuration == 'Debug'
       run: |
         $badgePattern = '\[!\[Unit tests\]\(https://img\.shields\.io/badge/Unit%20tests-Passed%3A[0-9]+%20Failed%3A[0-9]+-[a-z]+\)\]\(https://github\.com/grzegorz-ozanski/ntp-service/actions/runs/[0-9]+\)'
-        $badge = .\.github\scripts\badge-url.ps1 $env:Test_Results_Path\$env:Test_Results_File
+        $badge = ${env:Badge_Script} $env:Test_Results_Path\$env:Test_Results_File
         $newBadge = "[![Unit tests]($badge)](https://github.com/grzegorz-ozanski/ntp-service/actions/runs/${{ github.run_id }})"
 
         (Get-Content ${env:Readme_Path}) -replace $badgePattern, $newBadge | Set-Content ${env:Readme_Path}
