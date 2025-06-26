@@ -23,11 +23,6 @@ namespace NtpServiceLibrary
         SERVICE_PAUSED = 0x00000007,
     }
 
-    public interface IServiceStatusProvider
-    {
-        bool SetServiceStatus(System.IntPtr handle, ref ServiceStateInfo serviceStatus);
-    }
-
     public class SystemServiceStatusProvider : IServiceStatusProvider
     {
         [DllImport("advapi32.dll", SetLastError = true, EntryPoint = "SetServiceStatus")]

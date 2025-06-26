@@ -4,13 +4,6 @@ using System.Runtime.InteropServices;
 
 namespace NtpServiceLibrary
 {
-    public interface ISystemTimeProvider
-    {
-        bool SetSystemTime(ref Win32SystemTime.SystemTime st);
-        bool GetSystemTime(ref Win32SystemTime.SystemTime st);
-        bool GetLocalTime(ref Win32SystemTime.SystemTime st);
-    }
-
     public class SystemTimeProvider : ISystemTimeProvider
     {
         [DllImport("kernel32.dll", SetLastError = true, EntryPoint = "SetSystemTime")]

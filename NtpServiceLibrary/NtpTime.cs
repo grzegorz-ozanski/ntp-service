@@ -4,6 +4,29 @@ using System;
 
 namespace NtpServiceLibrary
 {
+    public class UdpClientAdapter : IUdpClient
+    {
+        private readonly UdpClient _client;
+        public UdpClientAdapter()
+        {
+            _client = new UdpClient();
+        }
+
+        public int ReceiveTimeout
+        {
+            get => _client.Client.ReceiveTimeout;
+            set => _client.Client.ReceiveTimeout = value;
+        }
+
+        public void Connect(string hostname, int port) => _client.Connect(hostname, port);
+
+        public int Send(byte[] dgram, int bytes) => _client.Send(dgram, bytes);
+
+        public byte[] Receive(ref IPEndPoint remoteEP) => _client.Receive(ref remoteEP);
+
+        public void Dispose() => _client.Dispose();
+    }
+
     /// <summary>
     /// Provides methods for retrieving time from an NTP server.
     /// </summary>
@@ -82,16 +105,17 @@ namespace NtpServiceLibrary
         /// <param name="ntpServer">Hostname or IP address of the NTP server.</param>
         /// <param name="ntpPort">UDP port, typically 123.</param>
         /// <returns>UTC DateTime.</returns>
-        public static DateTime RetrieveNTPTime(string ntpServer, int ntpPort)
+        public static DateTime RetrieveNTPTime(string ntpServer, int ntpPort, IUdpClient udpClient = null)
         {
             if (string.IsNullOrWhiteSpace(ntpServer))
                 throw new ArgumentNullException(nameof(ntpServer));
 
+            IUdpClient client = udpClient ?? new UdpClientAdapter();
             try
             {
-                using (UdpClient client = new UdpClient())
+                using (client)
                 {
-                    client.Client.ReceiveTimeout = ServerTimeout;
+                    client.ReceiveTimeout = ServerTimeout;
 
                     client.Connect(ntpServer, ntpPort);
 

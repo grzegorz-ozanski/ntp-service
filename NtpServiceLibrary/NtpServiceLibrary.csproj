@@ -41,15 +41,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Logger.cs" />
+    <Compile Include="interfaces\LogProvider.cs" />
+    <Compile Include="interfaces\ServiceStatusProvider.cs" />
+    <Compile Include="interfaces\SystemTimeProvider.cs" />
+    <Compile Include="interfaces\UdpClient.cs" />
     <Compile Include="NtpTime.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegistrySettingsProvider.cs" />
     <Compile Include="ServiceState.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="SettingsProvider.cs" />
+    <Compile Include="interfaces\SettingsProvider.cs" />
     <Compile Include="TimeSpanExtension.cs" />
     <Compile Include="WindowsTime.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
