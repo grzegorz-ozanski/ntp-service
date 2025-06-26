@@ -57,15 +57,6 @@ namespace NtpUnitTests
     }
     public class RegistrySettingsProviderTests
     {
-        private static IKey BuildKeyHierarchy(Dictionary<string, IKey> structure)
-        {
-            var mock = new Mock<IKey>();
-            foreach (var kvp in structure)
-            {
-                mock.Setup(m => m.OpenSubKey(kvp.Key)).Returns(kvp.Value);
-            }
-            return mock.Object;
-        }
         private static MockKey BuildMockHierarchy(Dictionary<string, object> values)
         {
             var leafKey = new MockKey(values);
@@ -187,11 +178,10 @@ namespace NtpUnitTests
             var baseKey = Registry.LocalMachine;
             var wrapper = new RegistryKeyWrapper(baseKey);
 
-            var subkey = wrapper.OpenSubKey("SOFTWARE");
-            Assert.NotNull(subkey);
-
-            var names = wrapper.GetValueNames();
-            Assert.NotNull(names);
+            Assert.NotNull(wrapper.OpenSubKey("SOFTWARE"));
+            Assert.NotNull(wrapper.GetValueNames());
+            Assert.NotNull(wrapper.GetValue("ServiceLastKnownStatus"));
+            Assert.Equal(RegistryValueKind.DWord, wrapper.GetValueKind("ServiceLastKnownStatus"));
         }
 
     }
