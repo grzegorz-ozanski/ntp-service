@@ -176,12 +176,18 @@ namespace NtpUnitTests
         public void RegistryKeyWrapper_DelegatesCorrectly()
         {
             var baseKey = Registry.LocalMachine;
+            var path = "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion".Split("\\");
+            var valueName = "CurrentVersion";
             var wrapper = new RegistryKeyWrapper(baseKey);
 
-            Assert.NotNull(wrapper.OpenSubKey("SOFTWARE"));
+            foreach (var subkey in path)
+            {
+                wrapper = (RegistryKeyWrapper)wrapper.OpenSubKey(subkey) ?? throw new InvalidOperationException($"Failed to open subkey: {subkey}");
+                Assert.NotNull(wrapper);
+            }
             Assert.NotNull(wrapper.GetValueNames());
-            Assert.NotNull(wrapper.GetValue("ServiceLastKnownStatus"));
-            Assert.Equal(RegistryValueKind.DWord, wrapper.GetValueKind("ServiceLastKnownStatus"));
+            Assert.NotNull(wrapper.GetValue(valueName));
+            Assert.Equal(RegistryValueKind.String, wrapper.GetValueKind(valueName));
         }
 
     }
