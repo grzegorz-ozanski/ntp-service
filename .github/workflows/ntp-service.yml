@@ -67,7 +67,7 @@ jobs:
     - name: "Coverage Report [Debug configuration only]"
       if: matrix.configuration == 'Debug'
       run: |
-        reportgenerator -reports:NtpUnitTests/TestResults/**/coverage.cobertura.xml -targetdir:coveragereport -reporttypes:Html,TextSummary,Badges
+        reportgenerator -reports:NtpUnitTests/TestResults/**/coverage.cobertura.xml -targetdir:coveragereport -reporttypes:Html,TextSummary,Badges -classfilters:-Program
         cat .\coveragereport\Summary.txt
 
     # Update passrate badge
